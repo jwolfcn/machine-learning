@@ -1,0 +1,22 @@
+{
+  "name": "ml.jwolf",
+  "version": "1.0.0",
+  "description": "machine learning",
+  "main": "index.js",
+  "dependencies": {
+    "numbers": "^0.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "ml"
+  ],
+  "author": "jwolf",
+  "license": "ISC"
+}
