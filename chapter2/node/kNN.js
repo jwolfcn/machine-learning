@@ -25,6 +25,7 @@ function getMatrixs(myPath) {
         }
     })
 }
+
 function compareMatrix (matrixA, matrixB) {
     let dist = numbers.matrix.subtraction(matrixA, matrixB)
     let sum = 0
