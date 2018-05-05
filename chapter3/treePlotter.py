@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+from os import listdir
 decisionNode = dict(boxstyle = "sawtooth", fc = "0.8")
 leafNode = dict(boxstyle = "round4", fc = "0.8")
 arrow_args = dict(arrowstyle = "<-")
+
 def plotNode(nodeTxt, centerPt, parentPt, nodeType):
     createPlot.ax1.annotate(nodeTxt, xy = parentPt, xycoords = "axes fraction", xytext = centerPt, textcoords = "axes fraction", va = "center", ha = "center", bbox = nodeType, arrowprops = arrow_args)
 
@@ -89,3 +91,7 @@ def plotTree(myTree, parentPt, nodeTxt):#if the first key tells you what feat wa
 #     depth = getTreeDepth(myTree)
 #     firstStr = myTree.keys()[]
 #     cntrPt = (plotTree.xoff + (1.0 + float(numLeafs)/2.0/plotTree.totalW, plotTree.yOff))
+
+
+
+

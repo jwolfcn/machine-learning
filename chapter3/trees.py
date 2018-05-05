@@ -1,5 +1,8 @@
 from math import log
 import operator
+from os import listdir
+from numpy import zeros, tile
+
 def calcShannonEnt(dataSet):
     labels = {}
     shannon = 0
@@ -78,6 +81,7 @@ def createTree(dataSet, labels):
     for value in uniqueVals:
         myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
     return myTree
+       
 
 def storeTree(inputTree, filenames):
     import pickle
@@ -89,3 +93,61 @@ def grabTree(filename):
     import pickle
     fr = open(filename)
     return pickle.load(fr)
+
+# return [0,0,0,...0,0,0]
+def img2vector(filename):
+    returnVect = []
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        line = [int(lineStr[j]) for j in range(32)]
+        returnVect.extend(line)
+    return returnVect
+
+def getTraningMat():
+    hwLabels = []
+    trainingFileList = listdir('../chapter2/digits/trainingDigits/')           #load the training set
+    m = len(trainingFileList)
+    trainingMat = []
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]     #take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        item = img2vector('../chapter2/digits/trainingDigits/%s' % fileNameStr)
+        item.append(classNumStr)
+        trainingMat.append(item)
+    return trainingMat
+
+def predictByTree(myTree, data):
+    isLeaf = False
+    root = myTree
+    while not isLeaf:
+        label = root.keys()[0]
+        indi = data[int(label)]
+        root = root[label][indi]
+        isLeaf = isinstance(root, int)
+    return root
+
+def testPredictByTree(tree):
+    testFileList = listdir('../chapter2/digits/testDigits')        #iterate through the test set
+    errorCount = 0.0
+    mTest = len(testFileList)
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileStr = fileNameStr.split('.')[0]     #take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        vectorUnderTest = img2vector('../chapter2/digits/testDigits/%s' % fileNameStr)
+        classifierResult = int(predictByTree(tree, vectorUnderTest))
+        print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
+        if (classifierResult != classNumStr): errorCount += 1.0
+    print "\nthe total number of errors is: %d" % errorCount
+    print "\n %f %% are right" % ((1-errorCount/float(mTest))*100)
+
+
+    #  dataSet = trees.getTraningMat()
+    #  labels = [str(item) for item in range(1024)]
+    #  mytree = trees.createTree(dataSet,labels)
+    #  wait for 210 s
+    #  trees.testPredictByTree(mytree) 
+    #  88.054968 % are right
